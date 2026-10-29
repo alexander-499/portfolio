@@ -32,7 +32,7 @@ const settingsStore = useSettingsStore();
       <div class="bottom">
         <div>
           <p>&copy; 2023-{{ copyrightYear }} Alexander. All Rights Reserved.</p>
-          <p>Site made using <a href="https://vuejs.org">Vue</a> and a few APIs running on TBA.</p>
+          <p>Site made using <a href="https://vuejs.org">Vue</a> and a few APIs running on <a href="https://www.cloudflare.com/">Cloudflare</a>.</p>
         </div>
         <div class="buttons">
           <!-- <Button appearance="text" @click="settingsStore.soundEnabled = !settingsStore.soundEnabled"><Icon name="sound" target=".button"/></Button> -->
