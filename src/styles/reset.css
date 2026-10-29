@@ -1,0 +1,37 @@
+*, ::before, ::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+p { line-height: 1.4; }
+button, input { font: inherit; }
+
+a {
+  color: var(--color-accent-blue);
+  text-underline-offset: 0.125rem;
+  transition: color 200ms;
+
+  &:hover { color: hsl(from var(--color-accent-blue) h s calc(l * 1.4)); }
+}
+
+hr {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-border-strong);
+  border: none;
+}
+
+code, pre {
+  font-size: 0.875rem;
+  font-family: var(--font-family-monospace);
+
+  &.bg {
+    background-color: var(--color-bg-secondary);
+    border-radius: 4px;
+    padding: 0.1875rem 0.5rem;
+  }
+}
+
+img { max-width: 100%; }

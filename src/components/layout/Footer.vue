@@ -1,113 +1,120 @@
+<script setup lang="ts">
+import { useSettingsStore } from "@/stores/settings";
+import { copyrightYear } from "@/utils";
+
+const settingsStore = useSettingsStore();
+</script>
+
 <template>
-  <footer id="footer">
+  <footer>
     <div>
-      <div class="left">
-        <RouterLink class="title" to="/">Alexander499</RouterLink>
-        <p>&copy; 2026 Alexander499</p>
-        <a href="https://ko-fi.com/alexander499"><b><i>Support me!</i></b></a>
-      </div>
-      <div class="right">
-        <div>
-          <ul>
-            <li><b>Portfolio</b></li>
-            <li><RouterLink to="/">Home</RouterLink></li>
-            <li><RouterLink to="/blog">Blog</RouterLink></li>
-            <li><img src="https://cdn.simpleicons.org/github/white"><a href="https://github.com/Alexander-499/portfolio" target="_blank">GitHub</a></li>
-          </ul>
+      <div class="top">
+        <div class="main">
+          <RouterLink :to="{ name: 'home' }">Alexander</RouterLink>
+          <span><a href="https://ko-fi.com/alexander499" target="_blank"><strong>Support me!</strong></a> &lt;3</span>
         </div>
-        <div>
+        <div class="links">
           <ul>
-            <li><img src="https://cdn.simpleicons.org/gmail/white"><a href="mailto:alexander499gg@gmail.de">Email</a></li>
-            <li><img src="https://cdn.simpleicons.org/youtube/white"><a href="https://www.youtube.com/@alexander499_">YouTube</a></li>
-            <li><img src="https://cdn.simpleicons.org/tiktok/white"><a href="https://www.tiktok.com/@ac.alexander499">TikTok</a></li>
-            <li><img src="https://cdn.simpleicons.org/discord/white"><a href="https://discord.gg/zB2PyHYu4T">Discord</a></li>
+            <li><strong>This Page</strong></li>
+            <li><RouterLink :to="{ name: 'blog' }">Blog</RouterLink></li>
+            <li><RouterLink :to="{ name: 'certificates' }">Certificates</RouterLink></li>
+            <li><Icon name="github"/><a href="https://github.com/alexander-499/portfolio" target="_blank">GitHub</a></li>
           </ul>
-        </div>
-        <div>
           <ul>
-            <li><img src="https://cdn.simpleicons.org/scratch/white"><a href="https://scratch.mit.edu/users/Alexander499">Scratch</a></li>
-            <li><img src="https://cdn.simpleicons.org/reddit/white"><a href="https://www.reddit.com/user/Alexander499_">Reddit</a></li>
-            <li><img src="https://cdn.simpleicons.org/twitch/white"><a href="https://www.twitch.tv/alexander499tv">Twitch</a></li>
-            <li><img src="https://cdn.simpleicons.org/x/white"><a href="https://x.com/Alexander499_">Twitter</a></li>
+            <li><strong>Socials</strong></li>
+            <li><Icon name="github"/><a href="https://github.com/alexander-499" target="_blank">GitHub</a></li>
+            <li><Icon name="youtube"/><a href="https://www.youtube.com/@alexander499_" target="_blank">YouTube</a></li>
+            <li><Icon name="tiktok"/><a href="https://www.tiktok.com/@wav.alexander" target="_blank">TikTok</a></li>
+            <li><Icon name="instagram"/><a href="https://www.instagram.com/wav.alexander" target="_blank">Instagram</a></li>
           </ul>
         </div>
       </div>
       <div class="bottom">
-        <p>Site made with 💝 using <a href="https://vuejs.org" target="_blank">Vue</a> and a few APIs running on <a href="https://www.netlify.com" target="_blank">Netlify</a>! </p>
+        <div>
+          <p>&copy; 2023-{{ copyrightYear }} Alexander. All Rights Reserved.</p>
+          <p>Site made using <a href="https://vuejs.org">Vue</a> and a few APIs running on TBA.</p>
+        </div>
+        <div class="buttons">
+          <!-- <Button appearance="text" @click="settingsStore.soundEnabled = !settingsStore.soundEnabled"><Icon name="sound" target=".button"/></Button> -->
+          <Button appearance="text" @click="settingsStore.colorScheme = settingsStore.colorScheme === 'dark' ? 'light' : 'dark'"><Icon name="color-scheme" target=".button"/></Button>
+          <Button href="/rss.xml" target="_blank" appearance="text"><Icon name="rss" target=".button"/></Button>
+        </div>
       </div>
     </div>
   </footer>
 </template>
 
-<style>
+<style scoped>
 footer {
-  display: flex;
-  justify-content: center;
+  margin: 0 1rem;
 
   > div {
-    width: min(880px, 75%);
-    max-width: 1440px;
-    display: grid;
-    grid-template-columns: 224px 1fr;
-    gap: 16px;
-    color: var(--color-text-secondary);
+    max-width: 45rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
     background-color: var(--color-bg-secondary);
-    font-size: 14px;
-    font-family: "JetBrains Mono";
-    border: hsl(from var(--color-bg-tertiary) h s l / 0.5) solid;
-    border-width: 1px 1px 0 1px;
-    border-radius: 8px 8px 0 0;
-    padding: 20px;
-    margin: 20px 20px 0 20px;
+    border: 1px var(--color-border-subtle);
+    border-style: solid solid none;
+    border-radius: 12px 12px 0 0;
+    padding: 0.75rem;
+    margin: 0 auto;
 
-    @media (width <= 760px) {
+    > div {
       display: flex;
-      flex-direction: column;
-    }
+      gap: 0.5rem;
+      justify-content: space-between;
 
-    .left {
-      display: flex;
-      flex-direction: column;
+      a { color: inherit; }
 
-      a.title {
-        font-size: 24px;
-        font-family: Pacifico;
-        text-decoration: none;
-        margin-top: -8px;
-      }
-    }
-
-    .right {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      
-      @media (width <= 480px) { grid-template-columns: repeat(2, 1fr); }
-      @media (width <= 320px) { grid-template-columns: 1fr; }
-
-      > div {
-        ul {
+      &.top {
+        flex: 1;
+  
+        .main {
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          list-style-type: none;
+    
+          > a {
+            font-size: 2.5rem;
+            font-family: var(--font-family-display);
+            text-decoration: none;
+          }
+        }
+    
+        .links {
+          display: flex;
+          gap: 1rem;
 
-          li {
+          ul {
+            min-width: 6.5rem;
             display: flex;
-            gap: 6px;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            list-style: none;
 
-            b {  color: var(--color-text-primary); }
+            li {
+              display: flex;
+              align-items: center;
+              gap: 0.25rem;
 
-            img {
-              height: 16px;
-              width: 16px;
+              &:not(:has(strong)) { color: var(--color-text-secondary); }
+
+              .icon {
+                height: 1rem;
+                width: 1rem;
+              }
+
+              a { transition: font-weight 200ms; }
+              a:not(:hover) { text-decoration: none; }
+              a:hover { font-weight: 700; }
             }
           }
         }
       }
+  
+      &.bottom .buttons { display: flex; }
     }
-
-    .bottom { grid-column: span 2; }
   }
 }
 </style>

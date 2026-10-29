@@ -1,82 +1,56 @@
-<script setup>
-import { useRoute } from "vue-router"
+<script setup lang="ts">
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 </script>
 
 <template>
-  <section>
-    <div>
-      <h1>Not Found!?</h1>
-      <p>The page you’re looking for doesn’t exist. Try checking the URL.</p>
-      <div class="links">
-        <RouterLink to="/"><IconHouse/> Return Home</RouterLink>
-        <RouterLink :to="route.query.from"><IconRotateCw/>Reload</RouterLink>
-      </div>
+  <section class="not-found">
+    <h1>Not Found!?</h1>
+    <p>The page you’re looking for doesn’t exist. Try checking the URL.</p>
+    <div class="links">
+      <Button :to="{ name: 'home' }"><Icon name="house"/>Return Home</Button>
+      <Button v-if="route.query.from" :href="(route.query.from as string)"><Icon name="rotate-cw"/>Reload</Button>
     </div>
     <span class="error-code">404</span>
   </section>
 </template>
 
 <style scoped>
-section {
-  height: 368px;
+section.not-found {
+  height: 23rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-  margin: 64px 0 -64px;
+  gap: 1rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: 4rem;
 
-  > div {
+  h1 {
+    font-size: min(8rem, 15vw);
+    font-weight: 900;
+    white-space: nowrap;
+    color: hsl(v-bind("Math.floor(Math.random() * 360)"), 100%, 50%);
+  }
+
+  .links {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    z-index: 1;
-
-    h1, p {
-      color: var(--color-text-secondary);
-      text-align: center;
-    }
-
-    h1 {
-      font-size: min(128px, 15vw);
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .links {
-      display: flex;
-      gap: 8px;
-
-      a {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        background-color: var(--color-bg-secondary);
-        text-decoration: none;
-        border-radius: 12px;
-        padding: 8px;
-        transition: scale 200ms;
-        &:hover { scale: 1.05; }
-        &:active { scale: 0.95; }
-
-        svg {
-          height: 20px;
-          width: 20px;
-        }
-      }
-    }
+    gap: 0.5rem;
   }
 
   .error-code {
     position: absolute;
     color: var(--color-text-tertiary);
-    font-size: min(640px, 45vw);
+    font-size: min(40rem, 45vw);
     font-weight: 900;
-    line-height: 0.8;
-    opacity: 0.05;
+    pointer-events: none;
     user-select: none;
+    z-index: -1;
   }
 }
+
+:root[data-theme="light"] section.not-found .error-code { opacity: 0.25; }
+:root[data-theme="dark"] section.not-found .error-code { opacity: 0.05; }
 </style>

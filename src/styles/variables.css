@@ -1,0 +1,51 @@
+:root {
+  --font-family-base: Inter, Roboto, Tahoma, Geneva, Verdana, "Segoe UI", sans-serif;
+  --font-family-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-family-display: "Pinyon Script", cursive;
+
+  --border-radius-round: 1000px;
+  --superellipse-ios: superellipse(1.6);
+  --superellipse-ios-negative: superellipse(-1.6);
+
+  --z-index-top: 1000;
+
+  &[data-theme="light"] {
+    --color-bg-primary: white;
+    --color-bg-secondary: #cccccd;
+    --color-bg-tertiary: #99999a;
+
+    --color-border-subtle: #0003;
+    --color-border-strong: #0006;
+
+    --color-control: #0003;
+    --color-control-hover: #0004;
+    
+    --color-text-primary: black;
+    --color-text-secondary: #222;
+    --color-text-tertiary: #555;
+  }
+
+  &[data-theme="dark"] {
+    --color-bg-primary: #111;
+    --color-bg-secondary: #222224;
+    --color-bg-tertiary: #333336;
+
+    --color-border-subtle: #ffffff14;
+    --color-border-strong: #ffffff2e;
+
+    --color-control: #ffffff12;
+    --color-control-hover: #ffffff18;
+    
+    --color-text-primary: #fff;
+    --color-text-secondary: #ccc;
+    --color-text-tertiary: #888;
+  }
+
+  --color-accent-red: crimson;
+  --color-accent-yellow: #fc3;
+  --color-accent-gold: goldenrod;
+  --color-accent-green: limegreen;
+  --color-accent-blue: #0091ff;
+  --color-accent-indigo: #4f46e5;
+  --color-accent-purple: blueviolet;
+}

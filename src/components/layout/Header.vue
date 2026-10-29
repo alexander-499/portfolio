@@ -1,217 +1,168 @@
-<script setup>
-import { ref, onMounted } from "vue"
-import { useRoute, useRouter } from "vue-router";
-import { currentLang, changeLang, t } from "@/scripts/i18n.js";
+<script setup lang="ts">
+import { useRoute } from "vue-router";
+import { useSettingsStore } from "@/stores/settings";
+import { useUiStore } from "@/stores/ui";
+import { capitalize } from "@/utils";
 
 const route = useRoute();
-const router = useRouter();
+const uiStore = useUiStore();
 
-const isSuperheader = ref(localStorage.getItem("isSuperheader") !== "false");
-const hideSuperheader = () => {
-  isSuperheader.value = false;
-  localStorage.setItem("isSuperheader", "false")
-}
-
-onMounted(() => {
-  if (!localStorage.getItem("isSuperheader")) localStorage.setItem("isSuperheader", "true");
-})
+const settingsStore = useSettingsStore();
 </script>
 
 <template>
-  <header id="header">
-    <div v-if="isSuperheader" class="superheader">
-      <p>Zpeedometer &ndash; the app that shows speed, altitude, compass, speed warning and a lot more (really) &ndash; has released! <a href="https://play.google.com/store/apps/details?id=com.alexander499.zpeedometer" target="_blank">Check it out!</a></p>
-      <button title="Hide" @click="hideSuperheader"><IconX/></button>
-      <div class="zigzag"></div>
+  <header>
+    <div v-show="uiStore.isSuperheader" class="superheader">
+      <p>Zpeedometer &ndash; the app that shows speed, altitude, compass, speed warning and a lot more &ndash; has released! <a href="https://play.google.com/store/apps/details?id=com.alexander499.zpeedometer" target="_blank">Check it out!</a></p>
+      <Button appearance="text" size="small" title="Hide" @click="uiStore.isSuperheader = false"><Icon name="x"/></Button>
+      <div class="zigzag"/>
     </div>
     <div class="main">
-      <div class="left">
-        <span>❤️‍🔥</span>
-        <RouterLink to="/" exact-active-class="active">Alexander499</RouterLink>
-      </div>
-      <nav>
-        <ul>
-          <li class="home"><RouterLink to="/" exact-active-class="active">{{ t("home") }}</RouterLink></li>
-          <li><RouterLink :class="{ active: route.path.startsWith('/blog') }" to="/blog">{{ t("blog") }}</RouterLink></li>
-        </ul>
-      </nav>
-      <div class="right">
-        <span @click="changeLang(route, router)">{{ currentLang === "en" ? "German" : "English" }}</span>
-        <button id="colorThemeButton" onclick="alert('Out of service.')"><IconMoon/></button>
-        <label for="navToggle">
-          <IconMenu/>
-          <input id="navToggle" type="checkbox">
-        </label>
+      <div>
+        <div class="left">
+          <div class="logo">
+            <span><span>❤️‍🔥</span></span>
+            <RouterLink :to="{ name: 'home' }">Alexander</RouterLink>
+          </div>
+          <nav :class="{ 'is-mobile-menu': uiStore.isMobileMenu }">
+            <RouterLink
+              v-for="page in ['blog', 'certificates']"
+              :key="page"
+              :class="{ active: route.path.startsWith(`/${page}`) }"
+              :to="{ name: page }"
+            >{{ capitalize(page) }}</RouterLink>
+          </nav>
+        </div>
+        <div>
+          <!-- <Button appearance="text" @click="settingsStore.soundEnabled = !settingsStore.soundEnabled"><Icon name="sound" target=".button"/></Button> -->
+          <Button appearance="text" @click="settingsStore.colorScheme = settingsStore.colorScheme === 'dark' ? 'light' : 'dark'"><Icon name="color-scheme" target=".button"/></Button>
+          <Button class="mobile-menu-button" appearance="text" @click="uiStore.isMobileMenu = !uiStore.isMobileMenu"><Icon name="mobile-menu" target=".button"/></Button>
+        </div>
       </div>
     </div>
   </header>
 </template>
 
 <style scoped>
+:global(::view-transition-group(header)) { z-index: var(--z-index-top); }
+
 header {
-  width: 100%;
-  position: fixed;
-  inset: 0 0 auto 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #1c1c1c44;
-  border-bottom: 1px #3338 solid;
+  position: sticky;
+  top: 0;
+  background-color: alpha(from var(--color-bg-primary) / 0.5);
+  border-bottom: 1px solid var(--color-border-subtle);
   backdrop-filter: blur(4px);
-  user-select: none;
-  z-index: 100;
-  transition-duration: 500ms;
+  view-transition-name: header;
+  z-index: var(--z-index-top);
 
   .superheader {
-    width: 100%;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     color: black;
-    background-color: #ffcc33;
+    background-color: var(--color-accent-yellow);
     font-weight: 700;
-    text-align: center;
-    padding-top: 4px;
-    z-index: 101;
+    padding: 0.25rem 2.5rem 0.25rem 0.5rem;
 
     p {
       text-wrap: balance;
-      margin-right: 28px;
+      text-align: center;
     }
 
-    a { font-weight: 900; }
+    a { color: inherit; }
 
-    button {
+    .button {
       position: absolute;
-      right: 2px;
-      display: grid;
-      place-items: center;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      transition: scale 200ms;
-      &:hover svg { color: var(--color-accent-red) }
-      &:active { scale: 0.8; }
-
-      svg {
-        height: 28px;
-        width: 28px;
-        color: black;
-        transition: color 200ms;
-      }
+      right: 0;
+      color: inherit;
     }
 
     .zigzag {
-      position: absolute;
-      bottom: -16px;
-      height: 16px;
+      height: 1rem;
       width: 100%;
+      position: absolute;
+      inset: auto 0 -0.75rem;
       background-image: url("/assets/images/superheader-zigzag.svg");
-      background-size: contain;
     }
   }
 
   .main {
-    height: 72px;
-    width: min(100vw, 1280px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-
-    @media (min-width: 840px) { div.left, div.right { min-width: 128px; } }
-
-    a { text-decoration: none; }
+    height: 4rem;
 
     > div {
+      height: 100%;
+      max-width: 60rem;
       display: flex;
       align-items: center;
-    }
+      justify-content: space-between;
+      padding: 0 0.5rem;
+      margin: 0 auto;
 
-    div.left {
-      font-size: 24px;
-
-      a {
-        font-family: Pacifico;
-        @media (width <= 400px) { display: none; }
-        &.active { color: var(--color-accent-blue); }
-      }
-
-      span {
-        font-size: 36px;
-        transition: scale 500ms;
-        &:hover { scale: -1 1; }
-      }
-    }
-
-    nav {
-      padding-left: 16px;
-      margin-right: auto;
-
-      ul {
+      > div {
         display: flex;
-        gap: 8px;
-        list-style-type: none;
-        font-size: 17px;
-        font-weight: 700;
-        text-transform: uppercase;
+        align-items: center;
 
-        li {
-          padding: 0 12px;
-          translate: 0 2px;
+        &.left {
+          gap: 1.5rem;
 
-          &.home { @media (width > 400px) { display: none; }}
+          a { text-decoration: none; }
+          a:not(.router-link-active, .active) { color: var(--color-text-primary) }
 
-          a {
-            transition: color 200ms;
-            &.active { color: var(--color-accent-blue); }
+          .logo {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+
+            span {
+              display: block;
+              user-select: none;
+
+              &:hover span { scale: -1 1; }
+              span { transition: scale 500ms; }
+            }
+
+            a {
+              font-family: var(--font-family-display);
+              margin-bottom: -0.25rem;
+            }
+          }
+
+          nav {
+            display: flex;
+            gap: 1rem;
+
+            @media (width <= 45rem) {
+              height: 100vh;
+              position: absolute;
+              inset: 100% 0 auto 100%;
+              flex-direction: column;
+              background-color: var(--color-bg-secondary);
+              padding: 1.5rem 0;
+              overflow: hidden;
+              transition: left 200ms;
+              z-index: 10000;
+
+              a {
+                font-size: 1.25rem;
+                padding: 0 1.5rem;
+              }
+            }
+
+            &.is-mobile-menu { left: 0; }
+
+            a {
+              font-weight: 700;
+              text-transform: uppercase;
+            }
           }
         }
+
+        @media (width > 45rem) {
+          .mobile-menu-button { display: none; }
+        }
       }
-    }
-
-    div.right {
-      color: var(--color-text-secondary);
-      justify-content: flex-end;
-
-      > span {
-        cursor: pointer;
-        margin-right: 8px;
-      }
-
-      button, label {
-        display: flex;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 8px;
-
-        svg { stroke: var(--color-text-secondary); }
-        input { display: none; }
-      }
-
-      label[for="navToggle"] { display: none; }
-    }
-
-    @media (width <= 640px) {
-      nav {
-        height: 100vh;
-        position: absolute;
-        inset: 100% 0 auto 100%;
-        background: var(--color-bg-secondary);
-        flex-direction: column;
-        padding: 16px 0;
-        overflow: hidden;
-        transition: inset 200ms;
-
-        ul { flex-direction: column; }
-        li { display: flex; }
-        li a { font-size: 20px; padding: 4px 12px; }
-      }
-
-      label[for="navToggle"] { display: flex !important; }
-      &:has(#navToggle:checked) nav { inset: 100% 0 auto 0; }
     }
   }
 }

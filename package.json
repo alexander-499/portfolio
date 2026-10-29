@@ -5,32 +5,59 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
-    "rss": "node scripts/rss.js"
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "@cublya/world-atlas": "3.0.0-beta.2",
+    "@fontsource-variable/climate-crisis": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
     "@giscus/vue": "^3.1.1",
-    "@sindresorhus/slugify": "^3.0.0",
-    "buffer": "^6.0.3",
-    "gray-matter": "^4.0.3",
-    "leaflet": "^1.9.4",
-    "lucide-vue-next": "^0.563.0",
-    "markdown-it": "^14.1.0",
-    "markdown-it-anchor": "^9.2.0",
-    "rss": "^1.2.2",
-    "shiki": "^3.22.0",
-    "unplugin-vue-markdown": "^29.2.0",
-    "vue": "^3.5.27",
-    "vue-router": "^5.0.1"
+    "@lucide/vue": "^1.62.0",
+    "@sindresorhus/slugify": "^3.0.1",
+    "@types/d3-interpolate": "^3.0.4",
+    "@types/topojson-client": "^3.1.5",
+    "@vueuse/core": "^15.0.0",
+    "@vueuse/motion": "^3.0.3",
+    "d3-geo": "^3.1.1",
+    "d3-interpolate": "^3.0.1",
+    "markdown-it-anchor": "^10.0.0",
+    "pinia": "^4.0.3",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "shiki": "^4.5.0",
+    "topojson-client": "^3.1.0",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.3",
-    "chokidar": "^5.0.0",
-    "vite": "^7.3.1",
-    "vite-plugin-vue-devtools": "^8.0.5"
+    "@alexander499/configs": "file:../alexander499-configs",
+    "@shikijs/langs": "^4.5.0",
+    "@shikijs/themes": "^4.5.0",
+    "@traeblain/markdown-it-temml": "^1.0.1",
+    "@tsconfig/node24": "^24.0.5",
+    "@types/d3-geo": "^3.1.1",
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^24.19.2",
+    "@types/topojson-simplify": "^3.0.3",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/tsconfig": "^0.9.1",
+    "eslint": "^10.13.0",
+    "feed": "^6.0.0",
+    "gray-matter": "^4.0.3",
+    "jiti": "^2.7.0",
+    "npm-run-all2": "^9.0.4",
+    "rollup-plugin-visualizer": "^7.1.1",
+    "topojson-simplify": "^3.0.3",
+    "typescript": "~6.0.0",
+    "unplugin-vue-components": "^32.1.0",
+    "unplugin-vue-markdown": "^32.1.1",
+    "vite": "^8.3.5",
+    "vite-plugin-vue-devtools": "^8.2.1",
+    "vue-tsc": "^3.3.11"
   },
   "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+    "node": "^22.18.0 || >=24.12.0"
   }
 }

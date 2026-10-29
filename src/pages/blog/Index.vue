@@ -1,40 +1,84 @@
-<script setup>
-import { blogArticles } from "@/scripts/blogLoader";
+<script setup lang="ts">
+import { useBlog } from "@/composables/useBlog";
 
-const publishedArticles = blogArticles.filter(a => !a.meta.draft);
+const { blogArticles } = useBlog();
 </script>
 
 <template>
   <section class="articles">
-    <div class="header">
+    <div class="heading">
       <h1>Articles</h1>
-      <a href="/blog/rss.xml" target="_blank"><IconRss/></a>
+      <Button href="/rss.xml" target="_blank"><Icon name="rss" target=".button"/></Button>
     </div>
-    <ul class="blog-list">
-      <li v-for="article in publishedArticles" :key="article.slug">
-        <RouterLink :to="`/blog/${article.slug}`">
-          <div>
-            <time :datetime="article.meta.date">
-              <span class="year">{{ article.meta.date.split("-")[0] }}</span>
-              <span class="month">
-                <span v-for="char in new Date(0, parseInt(article.meta.date.split('-')[1]) - 1).toLocaleString('en-US', { month: 'short' })" :key="char">{{ char }}</span>
-              </span>
-              <span class="day">
-                <span v-for="char in article.meta.date.split('-')[2]">{{ char }}</span>
-              </span>
-            </time>
-          </div>
-          <div v-if="article.meta.image" class="cover-image">
-            <img :style="{ viewTransitionName: `blog-article-image-${article.slug}` }" :src="article.meta.image">
-          </div>
-          <div class="content">
-            <h2 :style="{ viewTransitionName: `blog-article-title-${article.slug}` }">{{ article.meta.title }}</h2>
-            <p v-if="article.meta.description" :style="{ viewTransitionName: `blog-article-description-${article.slug}` }">{{ article.meta.description }}</p>
-          </div>
-        </RouterLink>
-      </li>
-    </ul>
+    <div class="article-list">
+      <RouterLink v-for="article in blogArticles" :key="article.slug" :to="{ name: 'blog-article', params: { slug: article.slug } }">
+        <time :datetime="article.meta.published">
+          <span class="year">{{ new Date(article.meta.published).getUTCFullYear() }}</span>
+          <span class="month">
+            <span v-for="char in new Date(article.meta.published).toLocaleString('en-US', { month: 'short' })" :key="char">{{ char }}</span>
+          </span>
+          <span class="day">
+            <span v-for="char in String(new Date(article.meta.published).getUTCDate()).padStart(2, '0')" :key="char">{{ char }}</span>
+          </span>
+        </time>
+        <div class="content">
+          <span :style="{ viewTransitionName: `blog-article-title-${article.slug}` }">{{ article.meta.title }}</span>
+          <p v-if="article.meta.description" :style="{ viewTransitionName: `blog-article-description-${article.slug}` }">{{ article.meta.description }}</p>
+        </div>
+      </RouterLink>
+    </div>
   </section>
 </template>
 
-<style scoped src="@/styles/pages/blog/index.css"></style>
+<style scoped>
+section.articles {
+  .heading {
+    display: flex;
+    justify-content: space-between;
+
+    h1 { font-size: 3rem; }
+  }
+
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    a {
+      display: flex;
+      gap: 0.75rem;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+
+      time {
+        width: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        text-transform: uppercase;
+        font-feature-settings: "tnum" 1;
+
+        .month, .day {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .year { font-size: 0.9375rem; }
+        .month { font-size: 1.125rem; }
+
+        .day {
+          font-size: 1.875rem;
+          margin-top: -0.25rem;
+        }
+      }
+    }
+
+    .content {
+      span {
+        color: var(--color-text-primary);
+        font-size: 2rem;
+        font-weight: 700;
+      }
+    }
+  }
+}
+</style>
