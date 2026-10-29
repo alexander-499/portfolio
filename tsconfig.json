@@ -10,6 +10,6 @@
     "noEmit": true,
     "noImplicitAny": false
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "vite.config.*", "vitest.config.*", "cypress.config.*", "playwright.config.*", "eslint.config.*"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "worker/**/*", "vite.config.*", "vitest.config.*", "cypress.config.*", "playwright.config.*", "eslint.config.*"],
   "exclude": ["src/**/__tests__/*", "node_modules", "**/.OLD"]
 }

@@ -104,7 +104,6 @@ function virtualWorldAtlasPlugin(): Plugin {
   };
 }
 
-
 export default defineConfig({
   plugins: [
     Vue({
