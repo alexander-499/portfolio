@@ -32,7 +32,7 @@
     "vue-router": "^5.3.1"
   },
   "devDependencies": {
-    "@alexander499/configs": "file:../alexander499-configs",
+    "@alexander499/configs": "^1.0.6",
     "@shikijs/langs": "^4.5.0",
     "@shikijs/themes": "^4.5.0",
     "@traeblain/markdown-it-temml": "^1.0.1",
