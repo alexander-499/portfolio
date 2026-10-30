@@ -2,6 +2,8 @@
 
 This repository contains the source code for my personal portfolio website. Just visit https://alexander499.de!
 
+I made it using **Vue** with **TypeScript** and I'm hosting it on **Cloudflare**.
+
 ## Usage Notice
 
 You are welcome to:
